@@ -1,0 +1,5 @@
+*.fig
+*.pdf
+*.asv
+results/fig
+data/
