@@ -10,5 +10,5 @@ doi: 10.6084/zenodo/XXXXXXXXX
 version: "1.0"
 license: CC BY-NC 4.0
 type: software
-repository-code:https://github.com/raviumadi/biosonar_responsivity
+repository-code: https://github.com/raviumadi/biosonar_responsivity
 url: https://doi.org/10.6084/zenodo/xxxxx
