@@ -12,7 +12,7 @@ See [Analyse Responsivity](https://github.com/raviumadi/analyse_responsivity) fo
 
 ---
 
-##  Filed Data Analysis Kit `/mat`
+##  Field Data Analysis Kit `/mat`
 
 ### `arrayDataAnalyzer.m`  
 Core class for parsing multi-channel audio files from the field array recordings. Includes methods for extracting call timing, durations, computing call rate, estimating velocity, and segmenting for responsivity analyses.
@@ -27,11 +27,16 @@ Utility class that iterates through a set of multi-channel .wav files and applie
 ### `analyzer_files.m`  
 Helper script that loads field datasets, applies relevant functions in `arrayDataAnalyzer`, and saves the intermediate output to `.mat` files for further analysis. Run through files while processing data. 
 
+## Data
+
+The outputs of the field data processing are stored in `results` and the processed data are stored in `data`. 
+
 ---
 
 ## Simulation Scripts `/mat`
 
-### `simulating_sequences.m`  
+### `simulating_sequences.m`
+
 Script to generate synthetic foraging trajectories with randomised prey motion. The resulting call sequences model the bat’s response to variable relative velocity, allowing comparison with field data. Here, used to generate plots. Adopt as fits.
 
 ### `foraging_sequence.m`  
