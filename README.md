@@ -84,8 +84,13 @@ If you use this code in your research, please cite the paper and link to this re
 
 This work is distributed under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)** License.
 
----
+
+## Other Publications
+
+Check my [ResearchGate](https://www.researchgate.net/profile/Ravi-Umadi-3) or [ORCID](https://orcid.org/0000-0003-3867-1769) for a full list of my research work. 
 
 ## Contact
 
-Author: Ravi Umadi  
+Drop by my personal website [biosonix.io](https://biosonix.io) and drop a message if you would like to collaborate or need assistance with the code and development. 
+
+---
