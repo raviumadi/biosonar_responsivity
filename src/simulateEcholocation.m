@@ -78,31 +78,55 @@ function result = simulateEcholocation(bandwidth, kr, target_distance, initial_v
     Ta(1) = 2 * target_distance / c;
     delta_t(1) = 0;
     echo_time(1) = delta_t(1) + Ta(1);
-   
+
+    k_noise = 0.1; % proportional noise factor (tunable)
 
     call_number = 1;
     done = false;
-    while ~done
-        Ta(call_number + 1) = 2 * new_target_distance(call_number) / c;
-        delta_t(call_number + 1) = kr * Ta(call_number + 1);
-        echo_time(call_number + 1) = max(cumsum(delta_t(1:call_number + 1))) + Ta(call_number + 1);
-        if motile
-            delta_s(call_number) = delta_t(call_number + 1) * initial_velocity + randn() / 10;
-        else
-            delta_s(call_number) = delta_t(call_number + 1) * initial_velocity; % + randn() / 10;
-        end
-        new_target_distance(call_number + 1) = new_target_distance(call_number) - delta_s(call_number);
+     % --- initialise optional markers ---
+    detection_point = NaN;
+    decrement_point = NaN;
 
-        TS(call_number) = calculateTargetStrength(min(bandwidth), target_diameter, new_target_distance(call_number + 1), A);
+    while ~done
+        Ta(call_number + 1) = (2 * new_target_distance(call_number) / c);
+        % delta_t(call_number + 1) = kr * Ta(call_number + 1);
+        delta_t(call_number+1) = (1+kr) * Ta(call_number+1);
+        echo_time(call_number + 1) = ...
+            max(cumsum(delta_t(1:call_number + 1))) + Ta(call_number + 1);
+
+        % --- Prey movement update ---
+        IPI_now = delta_t(call_number + 1);
+        step_nominal = initial_velocity * IPI_now;
+
+        if motile
+            % proportional Gaussian noise, scaled to step size
+            eps_step = k_noise * step_nominal * randn();
+            delta_s(call_number) = step_nominal + eps_step;
+        else
+            % clean (no noise)
+            delta_s(call_number) = step_nominal;
+        end
+
+        % update distance
+        new_target_distance(call_number + 1) = ...
+            new_target_distance(call_number) - delta_s(call_number);
+
+        % termination checks
+        TS(call_number) = calculateTargetStrength(min(bandwidth), ...
+                          target_diameter, new_target_distance(call_number + 1), A);
         TL(call_number) = 2 * calculateGeometricAttenuation(new_target_distance(call_number + 1));
         RL(call_number) = source_level - abs(TL(call_number)) + TS(call_number);
 
-        if RL(call_number) < detection_level
+        % update detection_point if not already set
+        if isnan(detection_point) && RL(call_number) < detection_level
             detection_point = call_number + 1;
         end
-        if Ta(call_number) > kr * initial_call_duration
+
+        % update decrement_point if not already set
+        if isnan(decrement_point) && Ta(call_number) > kr * initial_call_duration
             decrement_point = call_number + 1;
         end
+
         if new_target_distance(call_number) < 0.05
             done = true;
         end
@@ -111,13 +135,35 @@ function result = simulateEcholocation(bandwidth, kr, target_distance, initial_v
 
     call_rate_responsivity = abs(1 ./ diff(delta_t));
    
+    % --- call duration update ---
     new_call_duration = initial_call_duration * ones(call_number, 1)';
-    new_call_duration(decrement_point:end) = Ta(decrement_point:end) ./ kr;
-    new_call_duration(new_call_duration < 0.0005) = 0.0005;
 
+    if ~isnan(decrement_point)
+        new_call_duration(decrement_point:end) = Ta(decrement_point:end) ./ kr;
+    end
+    new_call_duration(new_call_duration < 0.0005) = 0.0005;
+    
+    % After computing new_call_duration deterministically, add a small
+    % noise
+    if motile
+        sigma_d = 0.0004;  % ~0.4 ms
+        new_call_duration = new_call_duration + sigma_d*randn(size(new_call_duration));
+        new_call_duration = max(new_call_duration, 0.0005);           % floor
+        new_call_duration = min(new_call_duration, initial_call_duration);
+    end
+    % --- amplitude update ---
     new_amplitude = source_level * ones(call_number - 1, 1);
-    new_amplitude(detection_point:end) = source_level - abs((detection_level - RL(detection_point:end)));
-    new_amplitude(new_amplitude < source_level_minimum) = linspace(source_level_minimum, source_level_minimum - 6, length(new_amplitude(new_amplitude < source_level_minimum)));
+
+    if ~isnan(detection_point)
+        new_amplitude(detection_point:end) = ...
+            source_level - abs((detection_level - RL(detection_point:end)));
+    end
+
+    if any(new_amplitude < source_level_minimum)
+        nLow = sum(new_amplitude < source_level_minimum);
+        new_amplitude(new_amplitude < source_level_minimum) = ...
+            linspace(source_level_minimum, source_level_minimum - 6, nLow);
+    end
     call_levels = 20e-6 * 10.^(new_amplitude ./ 20);
 
     seq = randn(fs * round(max(cumsum(delta_t))), 1) ./ 10e5;

@@ -24,12 +24,13 @@ An extended version of `arrayDataAnalyzer` that includes semi-automated buzz det
 
 Utility class that iterates through a set of multi-channel .wav files and applies batch analysis. Used during automated dataset construction.
 
-### `analyzer_files.m`  
+### `analyzer_files.m`
+
 Helper script that loads field datasets, applies relevant functions in `arrayDataAnalyzer`, and saves the intermediate output to `.mat` files for further analysis. Run through files while processing data. 
 
 ## Data
 
-The outputs of the field data processing are stored in `results` and the processed data are stored in `data`. 
+The outputs of the field data processing and simulation runs are stored in `results` and the processed data are stored in `data`. 
 
 ---
 
@@ -41,6 +42,14 @@ Script to generate synthetic foraging trajectories with randomised prey motion. 
 
 ### `foraging_sequence.m`  
 Function used within the simulation pipeline to generate an individual prey–bat trajectory, compute call emission timing, and apply the responsivity framework.
+
+### `field_sim_echolocation.m`
+
+Generates a simulated data set using `simulateEcholocation()`. The data is saved into a table and imported for behavioural profile analysis. Maybe customised.
+
+### `cross_check_cr_vr.m`
+
+Model validation for internal consistency checks. The script helps establish the utility of the predictive elements of the framework.
 
 ---
 
@@ -63,6 +72,8 @@ Models and call rate against $$k_r$$ and velocity.
 ### `time_to_intercept.m`
 
 Models the time to intercept based on the relative velocity between the chaser and the target.
+
+
 
 ## 🧪 Getting Started
 
@@ -91,6 +102,6 @@ Check my [ResearchGate](https://www.researchgate.net/profile/Ravi-Umadi-3) or [O
 
 ## Contact
 
-Drop by my personal website [biosonix.io](https://biosonix.io) and drop a message if you would like to collaborate or need assistance with the code and development. 
+Drop by my personal website [biosonix.io](https://biosonix.io) and leave a message if you would like to collaborate or need assistance with the code and development. 
 
 ---
