@@ -45,7 +45,7 @@ Function used within the simulation pipeline to generate an individual prey–ba
 
 ### `field_sim_echolocation.m`
 
-Generates a simulated data set using `simulateEcholocation()`. The data is saved into a table and imported for behavioural profile analysis. Maybe customised.
+Generates a simulated data set using `simulateEcholocation()`. The data is saved into a table and imported for behavioural profile analysis (Figure 8-9). Maybe customised.
 
 ### `cross_check_cr_vr.m`
 
@@ -73,7 +73,9 @@ Models and call rate against $$k_r$$ and velocity.
 
 Models the time to intercept based on the relative velocity between the chaser and the target.
 
+### `velocity_cr_model.m`
 
+Models the velocity-call rate tradeoff hypothesis using the simulated and field-collected data. In the paper >> Figure 6.
 
 ## 🧪 Getting Started
 
