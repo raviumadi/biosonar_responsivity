@@ -197,7 +197,7 @@ If you use this framework or code, please cite the latest version of the
 associated manuscript:
 
 > Umadi, R. & Firzlaff, U. *The Temporal Logic of Bat Echolocation: A
-> Responsivity Theory of Call Timing Patterns*. Manuscript (2026).
+> Responsivity Theory of Call Timing Patterns*. bioRxiv (2026). [doi: 10.1101/2025.06.16.659925](https://doi.org/10.1101/2025.06.16.659925)
 
 The preceding bioRxiv version remains available under the former title for
 version-level traceability:
