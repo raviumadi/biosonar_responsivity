@@ -1,0 +1,7 @@
+SweepName,Response,NumRows,P_Distance,P_Condition,P_DistanceByCondition,R2
+kr,Ta_ms,4864,0,0,0,0.998775634924964
+kr,Tb_ms,4864,0,0,0,0.999217181892888
+phi,Ta_ms,3813,0,0,0,0.998022585397415
+phi,Tb_ms,3813,0,0,0,0.998022585397415
+velocity,Ta_ms,7322,0,0,0,0.998779802481537
+velocity,Tb_ms,7322,0,0,0,0.998779802481537
